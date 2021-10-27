@@ -1,0 +1,28 @@
+<?php
+
+/**
+ * @file
+ * Functions to support theming in the Bartik theme.
+ */
+
+/**
+ * Implements hook_theme_suggestions_page_alter().
+ */
+function stefanini_theme_suggestions_page_alter(array &$suggestions, array $variables) {
+  if ($node = \Drupal::routeMatch()->getParameter('node')) {
+	  $suggestions[] = 'page__' . $node->bundle();
+  }
+}
+
+/**
+ * Implements template_preprocess_page().
+ */
+
+function stefanini_preprocess_page(&$variables) {
+  if (isset($variables['node'])) {
+    $variables['page']['title'] = $variables['node']->title->view();
+    $variables['page']['data_do_evento'] = $variables['node']->field_data_do_evento->view();
+    $variables['page']['body'] = $variables['node']->body->view();
+    $variables['page']['qtd_vagas'] = $variables['node']->field_qtd_vagas_disponiveis->view();
+  }
+}
